@@ -1,4 +1,4 @@
-# CentroFitness Simona & Luca — Project Work Unipegaso
+# Apice Clinic — Project Work Unipegaso
 
 > **Corso:** Informatica per le Imprese Digitali — Università Telematica Pegaso  
 > **Studente:** Stefania Sciretti  
@@ -25,41 +25,61 @@
 
 ### L'organizzazione
 
-**CentroFitness Simona & Luca** è un centro benessere privato che offre servizi integrati di nutrizione e personal training. Il centro opera nel **settore salute e benessere** (wellness), una branca del settore sanitario che comprende la prevenzione, il miglioramento della forma fisica e il supporto nutrizionale.
+**Apice Clinic** è una clinica privata specializzata in **nutrizione clinica e medicina dello sport**, che eroga prestazioni sanitarie integrate per pazienti e atleti. Opera nel **settore sanitario** a tutti gli effetti, in quanto:
 
-Le due figure professionali al suo interno sono:
+- eroga **prestazioni sanitarie riconosciute**: visite nutrizionistiche, valutazioni medico-sportive, check-up metabolici, monitoraggio glicemico;
+- coinvolge **figure professionali sanitarie**: medici nutrizionisti, dietiste cliniche, medici dello sport, personal trainer certificati;
+- gestisce **dati sanitari sensibili**: anamnesi, referti medici, parametri fisici, piani terapeutici e di allenamento.
 
-- **Simona Ferrara** — Nutrizionista certificata, specializzata in piani alimentari personalizzati per obiettivi sportivi e di benessere.
-- **Luca Martini** — Personal Trainer certificato CONI, specializzato in functional training e preparazione atletica.
+Le figure professionali operative sono:
 
-I clienti del centro sono persone con obiettivi diversi: dimagrimento, aumento della massa muscolare, preparazione sportiva, alimentazione equilibrata.
+- **Dott.ssa Simona Ruberti** — Medico nutrizionista, specializzata in nutrizione clinica e sportiva. Segue i pazienti con piani alimentari personalizzati, controlli metabolici (glicemia, composizione corporea) e supporto nutrizionale per la performance atletica.
+- **Luca Siretta** — Personal Trainer certificato ISSA e preparatore atletico, specializzato in functional training e preparazione atletica. Lavora in sinergia con la dottoressa Simona per integrare piano nutrizionale e scheda di allenamento.
+
+I pazienti e clienti del centro hanno obiettivi eterogenei: gestione del peso, miglioramento delle performance sportive, controllo di parametri metabolici (glicemia, colesterolo), recupero post-infortunio, preparazione a competizioni agonistiche.
+
+### Il contesto sanitario
+
+Una clinica di nutrizione e medicina dello sport rientra a pieno titolo nel **settore sanitario** perché:
+
+- la **nutrizione clinica** è una branca della medicina riconosciuta dal SSN;
+- i **medici nutrizionisti e dietisti** sono figure sanitarie iscritte agli albi professionali;
+- la **medicina dello sport** include valutazioni mediche obbligatorie per l'idoneità agonistica;
+- il **monitoraggio di parametri vitali** (glicemia, pressione, composizione corporea) costituisce attività sanitaria.
+
+L'applicazione gestisce quindi dati che, in un contesto reale, sarebbero soggetti alla normativa GDPR per i **dati particolari** (art. 9 GDPR) e al Codice della Privacy in ambito sanitario.
 
 ### Il problema
 
-Prima dell'applicazione, la gestione del centro avveniva tramite fogli Excel e comunicazioni via WhatsApp, con problemi di:
+Prima dell'applicazione, la gestione della clinica avveniva tramite fogli Excel e comunicazioni via WhatsApp/email, con problemi di:
 
-- Doppia prenotazione degli slot orari
-- Impossibilità di tracciare lo storico dei piani nutrizionali e delle schede di allenamento
-- Nessuna dashboard riepilogativa dell'attività
+- Doppia prenotazione degli slot orari tra le diverse figure professionali
+- Impossibilità di tracciare lo storico dei piani nutrizionali, delle schede di allenamento e dei parametri clinici
+- Nessuna dashboard riepilogativa dell'attività clinica e dei KPI operativi
+- Dispersione delle informazioni tra modulo sanitario (pazienti, referti, visite mediche) e modulo wellness (clienti, allenamenti, ricette)
 
 ### La soluzione
 
-Un'**applicazione web full-stack** con:
+Un'**applicazione web full-stack API-based** con:
 
-- **Frontend Angular** per la gestione operativa quotidiana (prenotazioni, clienti, piani, ricette)
-- **Backend REST API Spring Boot (Kotlin)** che espone tutti i servizi in modo standardizzato
+- **Frontend Angular** per la gestione operativa quotidiana (prenotazioni, pazienti, clienti, piani, referti, glicemia)
+- **Backend REST API Spring Boot (Kotlin)** che espone tutti i servizi in modo standardizzato e documentato via Swagger
 - **Database PostgreSQL** come sistema di persistenza con migrazione versionata (Flyway)
 
 ### Servizi implementati
 
 | Modulo | Descrizione |
 |--------|-------------|
-| 👥 **Clienti** | Anagrafica completa dei clienti del centro |
-| 📅 **Appuntamenti** | Prenotazione e gestione stati (PRENOTATA → CONFERMATA → COMPLETATA) |
-| 🥗 **Piani Nutrizionali** | Gestione dei diet plan assegnati da Simona |
-| 💪 **Schede Allenamento** | Gestione delle training plan assegnate da Luca |
+| 🏥 **Pazienti** | Anagrafica pazienti con codice fiscale, dati anagrafici e storico visite |
+| 👨‍⚕️ **Medici** | Registro dei medici con specializzazione e numero di iscrizione all'albo |
+| 📅 **Visite Mediche** | Prenotazione e gestione stati (BOOKED → CONFIRMED → COMPLETED) |
+| 📋 **Referti** | Diagnosi, prescrizioni e note cliniche associate a ogni visita |
+| 👥 **Clienti** | Anagrafica clienti del centro con obiettivi personali |
+| 🥗 **Piani Nutrizionali** | Piani alimentari personalizzati assegnati da Simona |
+| 💪 **Schede Allenamento** | Programmi di training assegnati da Luca |
 | 🍽️ **Ricette Fit** | Ricettario healthfood curato da Simona |
-| 🏠 **Dashboard** | KPI riepilogative: clienti attivi, appuntamenti, piani attivi |
+| 🩸 **Glicemia** | Monitoraggio glicemico tramite pungidito con classificazione automatica ADA/OMS |
+| 🏠 **Dashboard** | KPI riepilogative: pazienti, visite, piani attivi, misurazioni |
 
 ---
 
@@ -82,9 +102,11 @@ Un'**applicazione web full-stack** con:
                            │ JDBC / Hibernate
 ┌──────────────────────────▼──────────────────────────────┐
 │              DATABASE (PostgreSQL 15)                    │
-│  Schema gestito con Flyway (V1, V2)                      │
-│  Tabelle: client, trainer, fitness_appointment,          │
-│           diet_plan, training_plan, recipe               │
+│  Schema gestito con Flyway (V1, V2, V3)                  │
+│  Modulo clinico: patient, doctor, appointment, report    │
+│  Modulo wellness: client, trainer, fitness_appointment,  │
+│                   diet_plan, training_plan, recipe       │
+│  Modulo monitoraggio: glycemia_measurement               │
 └─────────────────────────────────────────────────────────┘
 ```
 

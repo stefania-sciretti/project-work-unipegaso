@@ -1,18 +1,14 @@
 <main class="container">
   <div class="page-header">
     <div>
-      <h1 class="page-title">👥 Clienti</h1>
+      <h1 class="page-title"><span class="material-icons page-title-icon">group</span> Clienti</h1>
       <p class="page-subtitle">Gestione anagrafica clienti</p>
     </div>
     <button class="btn btn-primary" (click)="openCreate()">+ Nuovo Cliente</button>
   </div>
-
-  <div *ngIf="alertMsg" class="alert"
-    [class.alert-success]="alertType==='success'"
-    [class.alert-error]="alertType==='error'">
-    {{ alertMsg }}
-  </div>
-
+  <ng-container *ngIf="alert$ | async as alert">
+    <div class="alert" [class.alert-success]="alert.type==='success'" [class.alert-error]="alert.type==='error'">{{ alert.message }}</div>
+  </ng-container>
   <div class="card">
     <div class="toolbar">
       <input type="text" placeholder="Cerca per nome…" (input)="onSearch($event)" style="flex:1;max-width:320px"/>
@@ -20,15 +16,11 @@
     <div *ngIf="loading" class="loading">Caricamento…</div>
     <div class="table-wrapper" *ngIf="!loading">
       <table>
-        <thead>
-          <tr>
-            <th>#</th><th>Nome Completo</th><th>Email</th><th>Telefono</th><th>Data di Nascita</th><th>Obiettivo</th><th>Azioni</th>
-          </tr>
-        </thead>
+        <thead><tr>
+          <th>#</th><th>Nome Completo</th><th>Email</th><th>Telefono</th><th>Data di Nascita</th><th>Obiettivo</th><th>Azioni</th>
+        </tr></thead>
         <tbody>
-          <tr *ngIf="clients.length === 0">
-            <td colspan="7" class="empty">Nessun cliente trovato.</td>
-          </tr>
+          <tr *ngIf="clients.length === 0"><td colspan="7" class="empty">Nessun cliente trovato.</td></tr>
           <tr *ngFor="let c of clients">
             <td>{{ c.id }}</td>
             <td><strong>{{ c.firstName }} {{ c.lastName }}</strong></td>
@@ -38,7 +30,7 @@
             <td>{{ c.goal ?? '–' }}</td>
             <td class="actions">
               <button class="btn btn-secondary btn-sm" (click)="openEdit(c)">Modifica</button>
-              <button class="btn btn-danger btn-sm"    (click)="delete(c.id)">Elimina</button>
+              <button class="btn btn-danger btn-sm" (click)="delete(c.id)">Elimina</button>
             </td>
           </tr>
         </tbody>
@@ -47,7 +39,6 @@
   </div>
 </main>
 
-<!-- Modale Cliente -->
 <div class="modal-overlay" *ngIf="showModal">
   <div class="modal">
     <div class="modal-header">
@@ -79,7 +70,11 @@
         </div>
         <div class="form-group">
           <label>Data di Nascita</label>
-          <input formControlName="birthDate" type="date"/>
+          <mat-form-field appearance="outline" class="mat-date-field">
+            <input matInput [matDatepicker]="pickerBirth" formControlName="birthDate" placeholder="gg/mm/aaaa"/>
+            <mat-datepicker-toggle matIconSuffix [for]="pickerBirth"></mat-datepicker-toggle>
+            <mat-datepicker #pickerBirth></mat-datepicker>
+          </mat-form-field>
         </div>
       </div>
       <div class="form-group">

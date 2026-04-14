@@ -35,9 +35,9 @@ data class ClientResponse(
     val createdAt: LocalDateTime
 )
 
-// ─── Trainer ─────────────────────────────────────────────────────────────────
+// ─── Staff ─────────────────────────────────────────────────────────────────
 
-data class TrainerResponse(
+data class StaffResponse(
     val id: Long,
     val firstName: String,
     val lastName: String,

@@ -5,7 +5,7 @@ import com.clinica.dto.DietPlanRequest
 import com.clinica.dto.DietPlanResponse
 import com.clinica.repository.ClientRepository
 import com.clinica.repository.DietPlanRepository
-import com.clinica.repository.TrainerRepository
+import com.clinica.repository.StaffRepository
 import com.clinica.service.api.DietPlanServicePort
 import com.clinica.util.orEntityNotFound
 import org.springframework.stereotype.Service
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 class DietPlanService(
     private val dietPlanRepository: DietPlanRepository,
     private val clientRepository: ClientRepository,
-    private val trainerRepository: TrainerRepository
+    private val staffRepository: StaffRepository
 ) : DietPlanServicePort {
 
     @Transactional(readOnly = true)
@@ -33,12 +33,12 @@ class DietPlanService(
     override fun create(request: DietPlanRequest): DietPlanResponse {
         val client = clientRepository.findById(request.clientId)
             .orEntityNotFound("Client", request.clientId)
-        val trainer = trainerRepository.findById(request.trainerId)
-            .orEntityNotFound("Trainer", request.trainerId)
+        val staff = staffRepository.findById(request.trainerId)
+            .orEntityNotFound("Staff", request.trainerId)
 
         val plan = DietPlan(
             client = client,
-            trainer = trainer,
+            staff = staff,
             title = request.title,
             description = request.description,
             calories = request.calories,
@@ -71,8 +71,8 @@ class DietPlanService(
         id = id,
         clientId = client.id,
         clientFullName = "${client.firstName} ${client.lastName}",
-        trainerId = trainer.id,
-        trainerFullName = "${trainer.firstName} ${trainer.lastName}",
+        trainerId = staff.id,
+        trainerFullName = "${staff.firstName} ${staff.lastName}",
         title = title,
         description = description,
         calories = calories,

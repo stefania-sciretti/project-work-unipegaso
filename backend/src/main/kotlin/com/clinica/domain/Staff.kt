@@ -4,8 +4,8 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "trainer")
-class Trainer(
+@Table(name = "staff")
+class Staff(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
@@ -16,9 +16,8 @@ class Trainer(
     @Column(name = "last_name", nullable = false, length = 100)
     var lastName: String,
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 30)
-    var role: TrainerRole,
+    @Column(nullable = false, length = 50)
+    var role: String,
 
     @Column(columnDefinition = "TEXT")
     var bio: String? = null,
@@ -32,7 +31,7 @@ class Trainer(
     @Column(name = "updated_at", nullable = false)
     var updatedAt: LocalDateTime = LocalDateTime.now(),
 
-    @OneToMany(mappedBy = "trainer", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "staff", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val appointments: MutableList<FitnessAppointment> = mutableListOf()
 ) {
     @PreUpdate

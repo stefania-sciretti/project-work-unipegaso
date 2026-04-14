@@ -6,7 +6,7 @@ import com.clinica.dto.GlycemiaMeasurementRequest
 import com.clinica.dto.GlycemiaMeasurementResponse
 import com.clinica.repository.ClientRepository
 import com.clinica.repository.GlycemiaMeasurementRepository
-import com.clinica.repository.TrainerRepository
+import com.clinica.repository.StaffRepository
 import com.clinica.service.api.GlycemiaMeasurementServicePort
 import com.clinica.util.orEntityNotFound
 import org.springframework.stereotype.Service
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 class GlycemiaMeasurementService(
     private val glycemiaRepository: GlycemiaMeasurementRepository,
     private val clientRepository: ClientRepository,
-    private val trainerRepository: TrainerRepository
+    private val staffRepository: StaffRepository
 ) : GlycemiaMeasurementServicePort {
 
     @Transactional(readOnly = true)
@@ -37,12 +37,12 @@ class GlycemiaMeasurementService(
     override fun create(request: GlycemiaMeasurementRequest): GlycemiaMeasurementResponse {
         val client = clientRepository.findById(request.clientId)
             .orEntityNotFound("Client", request.clientId)
-        val trainer = trainerRepository.findById(request.trainerId)
-            .orEntityNotFound("Trainer", request.trainerId)
+        val staff = staffRepository.findById(request.trainerId)
+            .orEntityNotFound("Staff", request.trainerId)
 
         val measurement = GlycemiaMeasurement(
             client = client,
-            trainer = trainer,
+            staff = staff,
             measuredAt = request.measuredAt,
             valueMgDl = request.valueMgDl,
             context = request.context,
@@ -73,8 +73,8 @@ class GlycemiaMeasurementService(
         id = id,
         clientId = client.id,
         clientFullName = "${client.firstName} ${client.lastName}",
-        trainerId = trainer.id,
-        trainerFullName = "${trainer.firstName} ${trainer.lastName}",
+        trainerId = staff.id,
+        trainerFullName = "${staff.firstName} ${staff.lastName}",
         measuredAt = measuredAt,
         valueMgDl = valueMgDl,
         context = context,

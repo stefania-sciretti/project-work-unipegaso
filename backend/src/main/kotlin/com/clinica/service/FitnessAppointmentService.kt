@@ -7,7 +7,7 @@ import com.clinica.dto.FitnessAppointmentResponse
 import com.clinica.dto.FitnessAppointmentStatusRequest
 import com.clinica.repository.ClientRepository
 import com.clinica.repository.FitnessAppointmentRepository
-import com.clinica.repository.TrainerRepository
+import com.clinica.repository.StaffRepository
 import com.clinica.service.api.FitnessAppointmentServicePort
 import com.clinica.util.orEntityNotFound
 import org.springframework.stereotype.Service
@@ -18,14 +18,14 @@ import org.springframework.transaction.annotation.Transactional
 class FitnessAppointmentService(
     private val appointmentRepository: FitnessAppointmentRepository,
     private val clientRepository: ClientRepository,
-    private val trainerRepository: TrainerRepository
+    private val staffRepository: StaffRepository
 ) : FitnessAppointmentServicePort {
 
     @Transactional(readOnly = true)
     override fun findAll(clientId: Long?, trainerId: Long?, status: String?): List<FitnessAppointmentResponse> {
         val appointments = when {
             clientId != null  -> appointmentRepository.findByClientId(clientId)
-            trainerId != null -> appointmentRepository.findByTrainerId(trainerId)
+            trainerId != null -> appointmentRepository.findByStaffId(trainerId)
             status != null    -> appointmentRepository.findByStatus(AppointmentStatus.valueOf(status.uppercase()))
             else              -> appointmentRepository.findAll()
         }
@@ -39,12 +39,12 @@ class FitnessAppointmentService(
     override fun create(request: FitnessAppointmentRequest): FitnessAppointmentResponse {
         val client = clientRepository.findById(request.clientId)
             .orEntityNotFound("Client", request.clientId)
-        val trainer = trainerRepository.findById(request.trainerId)
-            .orEntityNotFound("Trainer", request.trainerId)
+        val staff = staffRepository.findById(request.trainerId)
+            .orEntityNotFound("Staff", request.trainerId)
 
         val appointment = FitnessAppointment(
             client = client,
-            trainer = trainer,
+            staff = staff,
             scheduledAt = request.scheduledAt,
             serviceType = request.serviceType,
             notes = request.notes
@@ -75,9 +75,9 @@ class FitnessAppointmentService(
         id = id,
         clientId = client.id,
         clientFullName = "${client.firstName} ${client.lastName}",
-        trainerId = trainer.id,
-        trainerFullName = "${trainer.firstName} ${trainer.lastName}",
-        trainerRole = trainer.role.name,
+        trainerId = staff.id,
+        trainerFullName = "${staff.firstName} ${staff.lastName}",
+        trainerRole = staff.role,
         scheduledAt = scheduledAt,
         serviceType = serviceType,
         status = status.name,

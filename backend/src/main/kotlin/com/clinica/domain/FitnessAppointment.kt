@@ -16,7 +16,7 @@ class FitnessAppointment(
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "trainer_id", nullable = false)
-    var trainer: Trainer,
+    var staff: Staff,
 
     @Column(name = "scheduled_at", nullable = false)
     var scheduledAt: LocalDateTime,

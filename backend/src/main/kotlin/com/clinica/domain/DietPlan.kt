@@ -16,7 +16,7 @@ class DietPlan(
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "trainer_id", nullable = false)
-    var trainer: Trainer,
+    var staff: Staff,
 
     @Column(nullable = false, length = 255)
     var title: String,

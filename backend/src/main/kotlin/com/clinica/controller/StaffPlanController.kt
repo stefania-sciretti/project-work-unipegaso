@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/training-plans")
 @Tag(name = "Training Plans", description = "Personalized workout plans management")
-class TrainingPlanController(private val trainingPlanService: TrainingPlanServicePort) {
+class StaffPlanController(private val trainingPlanService: TrainingPlanServicePort) {
 
     @GetMapping
     @Operation(summary = "List all training plans", description = "Optionally filter by clientId")

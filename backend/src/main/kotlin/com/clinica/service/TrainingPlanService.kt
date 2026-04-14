@@ -4,7 +4,7 @@ import com.clinica.domain.TrainingPlan
 import com.clinica.dto.TrainingPlanRequest
 import com.clinica.dto.TrainingPlanResponse
 import com.clinica.repository.ClientRepository
-import com.clinica.repository.TrainerRepository
+import com.clinica.repository.StaffRepository
 import com.clinica.repository.TrainingPlanRepository
 import com.clinica.service.api.TrainingPlanServicePort
 import com.clinica.util.orEntityNotFound
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 class TrainingPlanService(
     private val trainingPlanRepository: TrainingPlanRepository,
     private val clientRepository: ClientRepository,
-    private val trainerRepository: TrainerRepository
+    private val staffRepository: StaffRepository
 ) : TrainingPlanServicePort {
 
     @Transactional(readOnly = true)
@@ -33,12 +33,12 @@ class TrainingPlanService(
     override fun create(request: TrainingPlanRequest): TrainingPlanResponse {
         val client = clientRepository.findById(request.clientId)
             .orEntityNotFound("Client", request.clientId)
-        val trainer = trainerRepository.findById(request.trainerId)
-            .orEntityNotFound("Trainer", request.trainerId)
+        val staff = staffRepository.findById(request.trainerId)
+            .orEntityNotFound("Staff", request.trainerId)
 
         val plan = TrainingPlan(
             client = client,
-            trainer = trainer,
+            staff = staff,
             title = request.title,
             description = request.description,
             weeks = request.weeks,
@@ -71,8 +71,8 @@ class TrainingPlanService(
         id = id,
         clientId = client.id,
         clientFullName = "${client.firstName} ${client.lastName}",
-        trainerId = trainer.id,
-        trainerFullName = "${trainer.firstName} ${trainer.lastName}",
+        trainerId = staff.id,
+        trainerFullName = "${staff.firstName} ${staff.lastName}",
         title = title,
         description = description,
         weeks = weeks,

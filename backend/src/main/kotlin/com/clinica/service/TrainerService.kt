@@ -1,38 +1,31 @@
 package com.clinica.service
 
-import com.clinica.domain.Trainer
-import com.clinica.domain.TrainerRole
-import com.clinica.dto.TrainerResponse
-import com.clinica.repository.TrainerRepository
+import com.clinica.domain.Staff
+import com.clinica.dto.StaffResponse
+import com.clinica.repository.StaffRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class TrainerService(private val trainerRepository: TrainerRepository) {
+class StaffService(private val staffRepository: StaffRepository) {
 
-    fun findAll(): List<TrainerResponse> =
-        trainerRepository.findAll().map { it.toResponse() }
+    fun findAll(): List<StaffResponse> =
+        staffRepository.findAll().map { it.toResponse() }
 
-    fun findById(id: Long): TrainerResponse =
-        trainerRepository.findById(id)
-            .orElseThrow { NoSuchElementException("Trainer not found with id: $id") }
+    fun findById(id: Long): StaffResponse =
+        staffRepository.findById(id)
+            .orElseThrow { NoSuchElementException("Staff not found with id: $id") }
             .toResponse()
 
-    fun findByRole(role: String): List<TrainerResponse> {
-        val trainerRole = try {
-            TrainerRole.valueOf(role.uppercase())
-        } catch (e: IllegalArgumentException) {
-            throw IllegalArgumentException("Invalid role '$role'. Valid values: NUTRITIONIST, PERSONAL_TRAINER")
-        }
-        return trainerRepository.findByRole(trainerRole).map { it.toResponse() }
-    }
+    fun findByRole(role: String): List<StaffResponse> =
+        staffRepository.findByRole(role.uppercase()).map { it.toResponse() }
 
-    private fun Trainer.toResponse() = TrainerResponse(
+    private fun Staff.toResponse() = StaffResponse(
         id = id,
         firstName = firstName,
         lastName = lastName,
-        role = role.name,
+        role = role,
         bio = bio,
         email = email,
         createdAt = createdAt

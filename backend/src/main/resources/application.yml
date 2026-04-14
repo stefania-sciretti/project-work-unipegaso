@@ -2,6 +2,12 @@ spring:
   application:
     name: centrofitness
 
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+
   datasource:
     url: jdbc:postgresql://localhost:5432/centrofitness
     username: postgres

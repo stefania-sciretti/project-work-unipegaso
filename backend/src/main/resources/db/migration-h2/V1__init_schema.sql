@@ -60,6 +60,7 @@ INSERT INTO patient (first_name, last_name, fiscal_code, birth_date, email, phon
     ('Erica',     'Guella',    'GLLERC00P63L219F', '2000-09-23', 'erica.guella@email.it',     '3445566778'),
     ('Alessia',   'Audace',    'DCALSS97A54F839M', '1997-01-14', 'alessia.audace@email.it',   '3557788990'),
     ('Simona',    'Sorino',    'SRNSMN96S42H501T', '1996-11-02', 'simona.sorino@email.it',    '3669900112'),
+    ('Marco',       'Lavecri',        'LVRMRC98T19L219Z', '1998-12-19', 'marco.lavecri@email.it',          '3425566779'),
     ('Serena',    'Degevere',  'DGVSRN00P57H501B', '2000-09-17', 'serena.degevere@email.it',  '3471234567'),
     ('Deborah',   'Lovorgio',  'LVRDHR00E53L219W', '2000-05-13', 'deborah.lovorgio@email.it', '3489876543'),
     ('Nadia',     'Pietri',    'PTRNDA99L58F839K', '1999-07-18', 'nadia.pietri@email.it',     '3507654321'),
@@ -71,8 +72,7 @@ INSERT INTO patient (first_name, last_name, fiscal_code, birth_date, email, phon
     ('Maximilian',  'Ceolia',         'CLOMXL01P09H501A', '2001-09-09', 'maximilian.ceolia@email.it',     '3381122445'),
     ('Iulia',       'Massimiliani',   'MSSLUI03D63L219B', '2003-04-23', 'iulia.massimiliani@email.it',    '3392233556'),
     ('Marcelin',    'Ceolia',         'CLOMCL02M31H501D', '2002-08-31', 'marcelin.ceolia@email.it',       '3403344667'),
-    ('Alessandru',  'Davini',         'DVNLSN00C28F839E', '2000-03-28', 'alessandru.davini@email.it',     '3414455778'),
-    ('Marco',       'Lavecri',        'LVRMRC98T19L219Z', '1998-12-19', 'marco.lavecri@email.it',          '3425566779');
+    ('Alessandru',  'Davini',         'DVNLSN00C28F839E', '2000-03-28', 'alessandru.davini@email.it',     '3414455778');
 
 INSERT INTO appointment (patient_id, doctor_id, scheduled_at, visit_type, status) VALUES
     (1,  1, DATEADD(DAY,  3, NOW()), 'Consulenza Nutrizionale',     'BOOKED'),

@@ -110,16 +110,26 @@ INSERT INTO staff (first_name, last_name, role, bio, email) VALUES
      'cristiana@centrofitness.it');
 
 -- ── Dati di esempio: clienti ──
--- client_id: 1=Elena, 2=Serena, 3=Andrea, 4=Sofia(Simona Sorino), 5=Marco
 INSERT INTO client (first_name, last_name, email, phone, birth_date, goal) VALUES
-    ('Elena',    'Debuo',    'elena.debuo@email.it',    '3331122334', '1996-09-07', 'Aumentare massa muscolare'),
-    ('Serena',   'Degevere', 'serena.degevere@email.it','3471234567', '2000-09-17', 'Alimentazione equilibrata'),
-    ('Andrea',   'Selino',   'andrea.selino@email.it',  '3449988776', '1990-02-11', 'Prepararsi per una gara'),
-    ('Simona',   'Sorino',   'simona.sorino@email.it',  '3669900112', '1996-11-02', 'Dimagrimento e benessere'),
-    ('Marco',    'Lavecri',  'marco.lavecri@email.it',  '3425566779', '1998-12-19', 'Perdere peso e tonificare');
+    ('Simona',       'Sorino',         'simona.sorino@email.it',        '3669900112', '1996-11-02', 'Dimagrimento e benessere'),
+    ('Alessia',      'Audace',         'alessia.audace@email.it',       '3557788990', '1997-01-14', 'Tonificare il corpo'),
+    ('Marco',        'Lavecri',        'marco.lavecri@email.it',        '3425566779', '1998-12-19', 'Perdere peso e tonificare'),
+    ('Elena',        'Debuo',          'elena.debuo@email.it',          '3331122334', '1996-09-07', 'Aumentare massa muscolare'),
+    ('Erica',        'Guella',         'erica.guella@email.it',         '3445566778', '2000-09-23', 'Migliorare resistenza'),
+    ('Serena',       'Degevere',       'serena.degevere@email.it',      '3471234567', '2000-09-17', 'Alimentazione equilibrata'),
+    ('Andrea',       'Selino',         'andrea.selino@email.it',        '3449988776', '1990-02-11', 'Prepararsi per una gara'),
+    ('Deborah',      'Lovorgio',       'deborah.lovorgio@email.it',     '3489876543', '2000-05-13', 'Perdere peso'),
+    ('Nadia',        'Pietri',         'nadia.pietri@email.it',         '3507654321', '1999-07-18', 'Benessere generale'),
+    ('Anna',         'Francis',        'anna.francis@email.it',         '3516543210', '2000-06-19', 'Alimentazione sana'),
+    ('Sebastian',    'Andorno',        'sebastian.andorno@email.it',    '3557711223', '1998-07-04', 'Aumentare massa muscolare'),
+    ('Robert',       'Dogri',          'robert.dogri@email.it',         '3661100334', '1996-06-30', 'Migliorare performance sportiva'),
+    ('Daniele',      'Cappello',       'daniele.cappello@email.it',     '3334455667', '1998-03-09', 'Definizione muscolare'),
+    ('Maximilian',   'Ceolia',         'maximilian.ceolia@email.it',    '3381122445', '2001-09-09', 'Aumentare forza'),
+    ('Iulia',        'Massimiliani',   'iulia.massimiliani@email.it',   '3392233556', '2003-04-23', 'Alimentazione equilibrata'),
+    ('Marcelin',     'Ceolia',         'marcelin.ceolia@email.it',      '3403344667', '2002-08-31', 'Perdere peso e tonificare'),
+    ('Alessandru',   'Davini',         'alessandru.davini@email.it',    '3414455778', '2000-03-28', 'Migliorare resistenza');
 
 -- ── Dati di esempio: appuntamenti ──
--- client_id: 1=Elena, 2=Serena, 3=Andrea, 4=Simona, 5=Marco
 INSERT INTO fitness_appointment (client_id, trainer_id, scheduled_at, service_type, status) VALUES
     (5, 1, NOW() + INTERVAL '2 days',  'Consulenza Nutrizionale',    'BOOKED'),
     (1, 2, NOW() + INTERVAL '1 day',   'Valutazione Fitness',        'CONFIRMED'),

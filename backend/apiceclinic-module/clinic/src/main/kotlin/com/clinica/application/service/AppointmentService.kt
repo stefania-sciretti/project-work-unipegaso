@@ -17,7 +17,7 @@ import java.time.LocalDateTime
 class AppointmentService(
     private val appointmentDao: AppointmentDao,
     private val patientDao: PatientDao,
-    private val doctorDao: DoctorDao
+    private val doctorDao: DoctorDao,
 ) {
 
     @Transactional(readOnly = true)
@@ -28,14 +28,12 @@ class AppointmentService(
     ): List<AppointmentResponse> =
         appointmentDao.findAll(patientId, doctorId, status)
             .map { it.toResponse() }
-
     @Transactional(readOnly = true)
     fun findById(id: Long): AppointmentResponse =
         appointmentDao.findById(id)?.toResponse()
             ?: throw NoSuchElementException("Appointment not found with id: $id")
 
     fun create(request: AppointmentRequest): AppointmentResponse {
-        // carico il dominio Patient/Doctor per popolare l’Appointment di dominio
         val patient = patientDao.findById(request.patientId)
             ?: throw NoSuchElementException("Patient not found with id: ${request.patientId}")
 
@@ -63,7 +61,7 @@ class AppointmentService(
 
         val newStatus = try {
             AppointmentStatus.valueOf(request.status.uppercase())
-        } catch (ex: IllegalArgumentException) {
+        } catch (_: IllegalArgumentException) {
             throw IllegalArgumentException("Invalid appointment status: '${request.status}'")
         }
 

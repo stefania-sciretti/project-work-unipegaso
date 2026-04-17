@@ -20,8 +20,8 @@
     <description>Sistema di prenotazione visite e gestione referti per clinica privata</description>
 
     <modules>
-        <module>apiceclinic-module/clinic</module>
         <module>apiceclinic-module/clinic-api</module>
+        <module>apiceclinic-module/clinic</module>
     </modules>
 
     <properties>

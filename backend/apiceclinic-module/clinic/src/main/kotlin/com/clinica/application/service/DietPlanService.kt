@@ -1,7 +1,6 @@
 package com.clinica.application.service
 
 import com.clinica.application.domain.DietPlan
-import com.clinica.application.service.DietPlanServicePort
 import com.clinica.doors.outbound.database.dao.DietPlanDao
 import com.clinica.doors.outbound.database.dao.PatientDao
 import com.clinica.doors.outbound.database.dao.StaffDao
@@ -17,21 +16,21 @@ class DietPlanService(
     private val dietPlanDao: DietPlanDao,
     private val patientDao: PatientDao,
     private val staffDao: StaffDao
-) : DietPlanServicePort {
+)  {
 
     @Transactional(readOnly = true)
-    override fun findAll(clientId: Long?): List<DietPlanResponse> =
+    fun findAll(clientId: Long?): List<DietPlanResponse> =
         dietPlanDao.findAll(clientId)
             .map { it.toResponse() }
 
     @Transactional(readOnly = true)
-    override fun findById(id: Long): DietPlanResponse {
+    fun findById(id: Long): DietPlanResponse {
         val dietPlan = dietPlanDao.findById(id)
             ?: throw NoSuchElementException("Diet plan not found with id: $id")
         return dietPlan.toResponse()
     }
 
-    override fun create(request: DietPlanRequest): DietPlanResponse {
+    fun create(request: DietPlanRequest): DietPlanResponse {
         val client = patientDao.findById(request.clientId)
             ?: throw NoSuchElementException("Client (patient) not found with id: ${request.clientId}")
 
@@ -56,7 +55,7 @@ class DietPlanService(
         return dietPlanDao.save(dietPlan).toResponse()
     }
 
-    override fun update(id: Long, request: DietPlanRequest): DietPlanResponse {
+    fun update(id: Long, request: DietPlanRequest): DietPlanResponse {
         val existing = dietPlanDao.findById(id)
             ?: throw NoSuchElementException("Diet plan not found with id: $id")
 
@@ -80,7 +79,7 @@ class DietPlanService(
         return dietPlanDao.save(updated).toResponse()
     }
 
-    override fun delete(id: Long) {
+    fun delete(id: Long) {
         if (!dietPlanDao.existsById(id)) {
             throw NoSuchElementException("Diet plan not found with id: $id")
         }

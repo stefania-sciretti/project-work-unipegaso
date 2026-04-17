@@ -33,22 +33,11 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
-        <!-- Moshi (usato dal codice generato dall'OpenAPI generator) -->
-        <dependency>
-            <groupId>com.squareup.moshi</groupId>
-            <artifactId>moshi</artifactId>
-            <version>1.15.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.moshi</groupId>
-            <artifactId>moshi-kotlin</artifactId>
-            <version>1.15.0</version>
-        </dependency>
+        <!-- Jackson annotations (usate dal codice generato dall'OpenAPI generator) -->
     </dependencies>
 
     <build>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
 
         <plugins>
             <!-- Il plugin Kotlin è ereditato dal parent; evitiamo la duplicazione qui -->
@@ -84,6 +73,7 @@
 
                             <configOptions>
                                 <dateLibrary>java8</dateLibrary>
+                                <serializationLibrary>jackson</serializationLibrary>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -111,6 +101,7 @@
 
                             <configOptions>
                                 <dateLibrary>java8</dateLibrary>
+                                <serializationLibrary>jackson</serializationLibrary>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -138,6 +129,7 @@
 
                             <configOptions>
                                 <dateLibrary>java8</dateLibrary>
+                                <serializationLibrary>jackson</serializationLibrary>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -165,6 +157,7 @@
 
                             <configOptions>
                                 <dateLibrary>java8</dateLibrary>
+                                <serializationLibrary>jackson</serializationLibrary>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -192,6 +185,7 @@
 
                             <configOptions>
                                 <dateLibrary>java8</dateLibrary>
+                                <serializationLibrary>jackson</serializationLibrary>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -219,6 +213,7 @@
 
                             <configOptions>
                                 <dateLibrary>java8</dateLibrary>
+                                <serializationLibrary>jackson</serializationLibrary>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -246,6 +241,7 @@
 
                             <configOptions>
                                 <dateLibrary>java8</dateLibrary>
+                                <serializationLibrary>jackson</serializationLibrary>
                             </configOptions>
                         </configuration>
                     </execution>

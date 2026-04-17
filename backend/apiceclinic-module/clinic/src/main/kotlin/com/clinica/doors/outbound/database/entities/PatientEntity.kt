@@ -31,7 +31,4 @@ class PatientEntity(
 
     @Column(name = "updated_at", nullable = false)
     var updatedAt: LocalDateTime = LocalDateTime.now(),
-
-    @OneToMany(mappedBy = "patientEntity", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val appointmentEntities: MutableList<AppointmentEntity> = mutableListOf(),
 )

@@ -3,7 +3,6 @@ package com.clinica.application.service
 import com.clinica.application.domain.AppointmentStatus
 import com.clinica.doors.outbound.database.repositories.AppointmentRepository
 import com.clinica.doors.outbound.database.repositories.DietPlanRepository
-import com.clinica.doors.outbound.database.repositories.FitnessAppointmentRepository
 import com.clinica.doors.outbound.database.repositories.PatientRepository
 import com.clinica.doors.outbound.database.repositories.RecipeRepository
 import com.clinica.doors.outbound.database.repositories.TrainingPlanRepository
@@ -19,7 +18,6 @@ class DashboardService(
     private val dietPlanRepository: DietPlanRepository,
     private val trainingPlanRepository: TrainingPlanRepository,
     private val recipeRepository: RecipeRepository,
-    private val fitnessAppointmentRepository: FitnessAppointmentRepository
 ) {
     fun getDashboard(): DashboardResponse = DashboardResponse(
         totalClients = patientRepository.count(),

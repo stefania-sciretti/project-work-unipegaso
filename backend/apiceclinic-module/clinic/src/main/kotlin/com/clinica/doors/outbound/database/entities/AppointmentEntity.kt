@@ -1,8 +1,8 @@
 package com.clinica.doors.outbound.database.entities
 
+import jakarta.persistence.*
+import jakarta.persistence.CascadeType
 import java.time.LocalDateTime
-import javax.persistence.*
-import javax.persistence.CascadeType
 
 
 @Entity

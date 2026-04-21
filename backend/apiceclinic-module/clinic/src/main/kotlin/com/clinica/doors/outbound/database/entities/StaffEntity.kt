@@ -1,7 +1,7 @@
 package com.clinica.doors.outbound.database.entities
 
-import java.time.LocalDateTime
-import javax.persistence.*
+import jakarta.persistence.*
+import java.time.LocalDate
 
 @Entity
 @Table(name = "staff")
@@ -26,10 +26,10 @@ data class StaffEntity(
     var email: String,
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: LocalDate = LocalDate.now(),
 
     @Column(name = "updated_at", nullable = false)
-    var updatedAt: LocalDateTime = LocalDateTime.now(),
+    var updatedAt: LocalDate = LocalDate.now(),
 
     @OneToMany(mappedBy = "staff", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val appointments: MutableList<FitnessAppointmentEntity> = mutableListOf(),

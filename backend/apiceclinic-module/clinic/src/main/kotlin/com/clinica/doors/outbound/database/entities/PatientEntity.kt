@@ -1,8 +1,8 @@
 package com.clinica.doors.outbound.database.entities
 
+import jakarta.persistence.*
 import java.time.LocalDate
 import java.time.LocalDateTime
-import javax.persistence.*
 
 @Entity
 @Table(name = "patient")

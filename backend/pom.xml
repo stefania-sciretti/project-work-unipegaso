@@ -46,6 +46,25 @@
         </dependencies>
     </dependencyManagement>
 
+    <repositories>
+        <!-- Maven Central - prioritario per evitare repository custom con problemi SSL -->
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
     <build>
         <plugins>
             <!-- parent non dichiara plugin esecutivi per Kotlin; i moduli che compilano Kotlin lo faranno localmente -->

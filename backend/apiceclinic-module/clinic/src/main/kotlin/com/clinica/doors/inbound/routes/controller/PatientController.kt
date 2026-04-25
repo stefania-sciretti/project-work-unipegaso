@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/patients")
+@RequestMapping("/api/clients")
 @Tag(name = "Patients", description = "Patient management")
 class PatientController(
     private val patientService: PatientService,

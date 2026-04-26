@@ -1,5 +1,9 @@
 {
   "devDependencies": {
     "@types/node": "^25.6.0"
+  },
+  "dependencies": {
+    "@angular/cdk": "^18.2.14",
+    "@angular/material": "^18.2.14"
   }
 }

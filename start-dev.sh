@@ -35,8 +35,16 @@ BACKEND_PID=$!
 echo "    Attendo avvio backend..."
 sleep 12
 
-# Avvia il frontend Angular
+# Libera la porta 4200 se occupata
 echo "[4/4] Avvio Frontend Angular (porta 4200)..."
+echo "    Libero porta 4200 se occupata..."
+PID_4200=$(netstat -ano 2>/dev/null | grep ":4200 " | grep "LISTENING" | awk '{print $5}' | head -1)
+if [ -n "$PID_4200" ]; then
+  echo "    Termino processo PID $PID_4200 sulla porta 4200..."
+  taskkill //F //PID "$PID_4200" 2>/dev/null || true
+fi
+sleep 1
+
 cd "$SCRIPT_DIR/frontend"
 npm run start &
 FRONTEND_PID=$!

@@ -3,10 +3,9 @@ import {RouterModule} from '@angular/router';
 import {NavbarComponent} from './components/navbar/navbar.component';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterModule, NavbarComponent],
-  template: `
+    selector: 'app-root',
+    imports: [RouterModule, NavbarComponent],
+    template: `
     <app-navbar></app-navbar>
     <div class="page-content">
       <router-outlet></router-outlet>
@@ -19,11 +18,11 @@ import {NavbarComponent} from './components/navbar/navbar.component';
         <div class="footer-contacts">
           <a href="mailto:prenotazioni@apiceclinic.com" class="footer-link">
             <span class="material-icons" style="font-size:1rem">mail_outline</span>
-            prenotazioni@apiceclinic.com
+            prenotazioni&#64;apiceclinic.com
           </a>
           <a href="mailto:informazioni@apiceclinic.com" class="footer-link">
             <span class="material-icons" style="font-size:1rem">mail_outline</span>
-            informazioni@apiceclinic.com
+            informazioni&#64;apiceclinic.com
           </a>
           <a href="tel:+393480000000" class="footer-link">
             <span class="material-icons" style="font-size:1rem">phone</span>

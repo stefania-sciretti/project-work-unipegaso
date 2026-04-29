@@ -18,8 +18,7 @@ sleep 2
 # Build del backend con Maven
 echo "[2/4] Build Backend (Maven)..."
 cd "$SCRIPT_DIR/backend"
-mvn clean package -DskipTests -q
-if [ $? -ne 0 ]; then
+if ! mvn clean package -DskipTests -q; then
   echo ""
   echo "[ERRORE] Build Maven fallita. Controlla i log sopra."
   exit 1
@@ -55,5 +54,10 @@ echo ""
 echo "Premi CTRL+C per fermare tutti i servizi."
 
 # Attende e gestisce CTRL+C per fermare tutto
-trap "echo 'Arresto servizi...'; kill $BACKEND_PID $FRONTEND_PID 2>/dev/null; exit 0" SIGINT SIGTERM
+cleanup() {
+  echo 'Arresto servizi...'
+  kill "$BACKEND_PID" "$FRONTEND_PID" 2>/dev/null
+  exit 0
+}
+trap cleanup SIGINT SIGTERM
 wait

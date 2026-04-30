@@ -11,5 +11,6 @@ fun StaffEntity.toDomain(): Staff =
         role = this.role,
         bio = this.bio,
         email = this.email,
+        createdAt = this.createdAt,
         updatedAt = this.updatedAt
     )

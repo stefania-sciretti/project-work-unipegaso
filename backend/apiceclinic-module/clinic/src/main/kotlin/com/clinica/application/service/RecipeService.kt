@@ -18,10 +18,8 @@ class RecipeService(
         recipeDao.findAll(category, search).map { it.toResponse() }
 
     @Transactional(readOnly = true)
-    fun findById(id: Long): RecipeResponse {
-        val recipe = recipeDao.findById(id) ?: throw NoSuchElementException("Recipe $id not found")
-        return recipe.toResponse()
-    }
+    fun findById(id: Long): RecipeResponse =
+        recipeDao.findById(id).orThrow("Recipe $id not found").toResponse()
 
     @Transactional
     fun create(request: RecipeRequest): RecipeResponse {
@@ -42,7 +40,7 @@ class RecipeService(
 
     @Transactional
     fun update(id: Long, request: RecipeRequest): RecipeResponse {
-        val existing = recipeDao.findById(id) ?: throw NoSuchElementException("Recipe $id not found")
+        val existing = recipeDao.findById(id).orThrow("Recipe $id not found")
         val updated = existing.copy(
             title = request.title,
             description = request.description,

@@ -26,14 +26,13 @@ class FitnessAppointmentService(
 
     @Transactional(readOnly = true)
     fun findById(id: Long): FitnessAppointmentResponse =
-        appointmentDao.findById(id)?.toResponse()
-            ?: throw NoSuchElementException("Fitness appointment not found with id: $id")
+        appointmentDao.findById(id).orThrow("Fitness appointment not found with id: $id").toResponse()
 
     fun create(request: FitnessAppointmentRequest): FitnessAppointmentResponse {
         val client = clientDao.findById(request.clientId)
-            ?: throw NoSuchElementException("Client not found with id: ${request.clientId}")
+            .orThrow("Client not found with id: ${request.clientId}")
         val staff = staffDao.findById(request.trainerId)
-            ?: throw NoSuchElementException("Staff not found with id: ${request.trainerId}")
+            .orThrow("Staff not found with id: ${request.trainerId}")
 
         val appointment = FitnessAppointment(
             id = 0L,
@@ -50,29 +49,26 @@ class FitnessAppointmentService(
 
     fun updateStatus(id: Long, request: FitnessAppointmentStatusRequest): FitnessAppointmentResponse {
         val appointment = appointmentDao.findById(id)
-            ?: throw NoSuchElementException("Fitness appointment not found with id: $id")
-        val newStatus = try {
-            AppointmentStatus.valueOf(request.status.uppercase())
-        } catch (e: IllegalArgumentException) {
-            throw IllegalArgumentException("Invalid status '${request.status}'")
-        }
-        val updated = appointment.copy(status = newStatus, updatedAt = LocalDateTime.now())
+            .orThrow("Fitness appointment not found with id: $id")
+        val updated = appointment.copy(
+            status = AppointmentStatus.parse(request.status),
+            updatedAt = LocalDateTime.now()
+        )
         return appointmentDao.save(updated).toResponse()
     }
 
     fun delete(id: Long) {
         val appointment = appointmentDao.findById(id)
-            ?: throw NoSuchElementException("Fitness appointment not found with id: $id")
-        val cancelled = appointment.copy(status = AppointmentStatus.CANCELLED)
-        appointmentDao.save(cancelled)
+            .orThrow("Fitness appointment not found with id: $id")
+        appointmentDao.save(appointment.copy(status = AppointmentStatus.CANCELLED))
     }
 
     private fun FitnessAppointment.toResponse() = FitnessAppointmentResponse(
         id = id,
         clientId = client.id,
-        clientFullName = "${client.firstName} ${client.lastName}",
+        clientFullName = client.fullName,
         trainerId = staff.id,
-        trainerFullName = "${staff.firstName} ${staff.lastName}",
+        trainerFullName = staff.fullName,
         trainerRole = staff.role,
         scheduledAt = scheduledAt,
         serviceType = serviceType,

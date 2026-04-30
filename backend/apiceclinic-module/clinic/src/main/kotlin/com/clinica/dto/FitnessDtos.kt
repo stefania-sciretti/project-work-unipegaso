@@ -3,37 +3,7 @@ package com.clinica.dto
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
-import java.time.LocalDate
 import java.time.LocalDateTime
-
-// ─── Client ──────────────────────────────────────────────────────────────────
-
-data class ClientRequest(
-    @field:NotBlank(message = "First name is required")
-    val firstName: String,
-
-    @field:NotBlank(message = "Last name is required")
-    val lastName: String,
-
-    @field:NotBlank(message = "Email is required")
-    @field:Email(message = "Invalid email format")
-    val email: String,
-
-    val phone: String? = null,
-    val birthDate: LocalDate? = null,
-    val goal: String? = null
-)
-
-data class ClientResponse(
-    val id: Long,
-    val firstName: String,
-    val lastName: String,
-    val email: String,
-    val phone: String?,
-    val birthDate: LocalDate?,
-    val goal: String?,
-    val createdAt: LocalDateTime
-)
 
 // ─── Staff ─────────────────────────────────────────────────────────────────
 

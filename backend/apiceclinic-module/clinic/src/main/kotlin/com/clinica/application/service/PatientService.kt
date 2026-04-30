@@ -18,12 +18,12 @@ class PatientService(
 
     @Transactional(readOnly = true)
     fun findById(id: Long): Patient =
-        dao.findById(id) ?: throw NoSuchElementException("Patient not found with id: $id")
+        dao.findById(id).orThrow("Patient not found with id: $id")
 
     @Transactional(readOnly = true)
     fun search(query: String): List<Patient> {
         val cleaned = query.trim()
-        require(cleaned.length < 3) { "Search term must be at least 3 characters long" }
+        require(cleaned.length >= 3) { "Search term must be at least 3 characters long" }
         return dao.search(cleaned)
     }
 
@@ -45,8 +45,7 @@ class PatientService(
     }
 
     fun update(id: Long, request: PatientRequest): Patient {
-        val patient = dao.findById(id)
-            ?: throw NoSuchElementException("Patient not found with id: $id")
+        val patient = dao.findById(id).orThrow("Patient not found with id: $id")
         require(patient.fiscalCode == request.fiscalCode || !dao.existsByFiscalCode(request.fiscalCode)) {
             "A patient with fiscal code '${request.fiscalCode}' already exists"
         }
@@ -63,7 +62,7 @@ class PatientService(
     }
 
     fun delete(id: Long) {
-        if (!dao.existsById(id)) throw NoSuchElementException("Patient not found with id: $id")
+        dao.findById(id).orThrow("Patient not found with id: $id")
         dao.deleteById(id)
     }
 }

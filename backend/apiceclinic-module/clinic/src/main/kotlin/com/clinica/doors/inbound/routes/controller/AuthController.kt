@@ -120,8 +120,7 @@ class AuthController {
     fun test(): ResponseEntity<Map<String, String>> {
         return ResponseEntity.ok(mapOf(
             "status" to "ok",
-            "message" to "API di autenticazione funzionante",
-            "debug_endpoints" to "POST /api/debug/hash-password?password=<pwd>, POST /api/debug/verify-password"
+            "message" to "API di autenticazione funzionante"
         ))
     }
 }

@@ -22,17 +22,14 @@ class ReportService(
         reportDao.findAll().map { it.toResponse() }
 
     @Transactional(readOnly = true)
-    fun findById(id: Long): ReportResponse {
-        val report = reportDao.findById(id) ?: throw NoSuchElementException("Report $id not found")
-        return report.toResponse()
-    }
+    fun findById(id: Long): ReportResponse =
+        reportDao.findById(id).orThrow("Report $id not found").toResponse()
 
     @Transactional(readOnly = true)
-    fun findByAppointmentId(appointmentId: Long): ReportResponse {
-        val report = reportDao.findByAppointmentId(appointmentId)
-            ?: throw NoSuchElementException("Report for appointment $appointmentId not found")
-        return report.toResponse()
-    }
+    fun findByAppointmentId(appointmentId: Long): ReportResponse =
+        reportDao.findByAppointmentId(appointmentId)
+            .orThrow("Report for appointment $appointmentId not found")
+            .toResponse()
 
     @Transactional
     fun create(request: ReportRequest): ReportResponse {
@@ -62,7 +59,7 @@ class ReportService(
 
     @Transactional
     fun update(id: Long, request: ReportRequest): ReportResponse {
-        val existing = reportDao.findById(id) ?: throw NoSuchElementException("Report $id not found")
+        val existing = reportDao.findById(id).orThrow("Report $id not found")
         existing.diagnosis = request.diagnosis
         existing.prescription = request.prescription
         existing.doctorNotes = request.doctorNotes

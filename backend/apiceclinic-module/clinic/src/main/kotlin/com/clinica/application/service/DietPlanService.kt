@@ -24,18 +24,15 @@ class DietPlanService(
             .map { it.toResponse() }
 
     @Transactional(readOnly = true)
-    fun findById(id: Long): DietPlanResponse {
-        val dietPlan = dietPlanDao.findById(id)
-            ?: throw NoSuchElementException("Diet plan not found with id: $id")
-        return dietPlan.toResponse()
-    }
+    fun findById(id: Long): DietPlanResponse =
+        dietPlanDao.findById(id).orThrow("Diet plan not found with id: $id").toResponse()
 
     fun create(request: DietPlanRequest): DietPlanResponse {
         val client = patientDao.findById(request.clientId)
-            ?: throw NoSuchElementException("Client (patient) not found with id: ${request.clientId}")
+            .orThrow("Client (patient) not found with id: ${request.clientId}")
 
         val trainer = staffDao.findById(request.trainerId)
-            ?: throw NoSuchElementException("Trainer (staff) not found with id: ${request.trainerId}")
+            .orThrow("Trainer (staff) not found with id: ${request.trainerId}")
 
         val now = LocalDateTime.now()
 
@@ -57,13 +54,13 @@ class DietPlanService(
 
     fun update(id: Long, request: DietPlanRequest): DietPlanResponse {
         val existing = dietPlanDao.findById(id)
-            ?: throw NoSuchElementException("Diet plan not found with id: $id")
+            .orThrow("Diet plan not found with id: $id")
 
         val client = patientDao.findById(request.clientId)
-            ?: throw NoSuchElementException("Client (patient) not found with id: ${request.clientId}")
+            .orThrow("Client (patient) not found with id: ${request.clientId}")
 
         val trainer = staffDao.findById(request.trainerId)
-            ?: throw NoSuchElementException("Trainer (staff) not found with id: ${request.trainerId}")
+            .orThrow("Trainer (staff) not found with id: ${request.trainerId}")
 
         val updated = existing.copy(
             client = client,
@@ -80,9 +77,7 @@ class DietPlanService(
     }
 
     fun delete(id: Long) {
-        if (!dietPlanDao.existsById(id)) {
-            throw NoSuchElementException("Diet plan not found with id: $id")
-        }
+        dietPlanDao.findById(id).orThrow("Diet plan not found with id: $id")
         dietPlanDao.deleteById(id)
     }
 

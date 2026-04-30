@@ -1,9 +1,9 @@
 package com.clinica.application.service
 
-import com.clinica.doors.outbound.database.entities.TrainingPlanEntity
-import com.clinica.doors.outbound.database.repositories.ClientRepository
-import com.clinica.doors.outbound.database.repositories.StaffRepository
-import com.clinica.doors.outbound.database.repositories.TrainingPlanRepository
+import com.clinica.application.domain.TrainingPlan
+import com.clinica.doors.outbound.database.dao.PatientDao
+import com.clinica.doors.outbound.database.dao.StaffDao
+import com.clinica.doors.outbound.database.dao.TrainingPlanDao
 import com.clinica.dto.TrainingPlanRequest
 import com.clinica.dto.TrainingPlanResponse
 import org.springframework.stereotype.Service
@@ -12,64 +12,69 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class TrainingPlanService(
-    private val trainingPlanRepository: TrainingPlanRepository,
-    private val clientRepository: ClientRepository,
-    private val staffRepository: StaffRepository
+    private val trainingPlanDao: TrainingPlanDao,
+    private val patientDao: PatientDao,
+    private val staffDao: StaffDao
 ) : TrainingPlanServicePort {
 
     @Transactional(readOnly = true)
-    override fun findAll(clientId: Long?): List<TrainingPlanResponse> {
-        val plans = if (clientId != null) trainingPlanRepository.findByClientEntityId(clientId)
-                    else trainingPlanRepository.findAll()
-        return plans.map { it.toResponse() }
-    }
+    override fun findAll(clientId: Long?): List<TrainingPlanResponse> =
+        trainingPlanDao.findAll(clientId).map { it.toResponse() }
 
     @Transactional(readOnly = true)
     override fun findById(id: Long): TrainingPlanResponse =
-        trainingPlanRepository.findById(id).orElse(null)?.toResponse()
-            ?: throw NoSuchElementException("Training plan not found with id: $id")
+        trainingPlanDao.findById(id).orThrow("Training plan not found with id: $id").toResponse()
 
     override fun create(request: TrainingPlanRequest): TrainingPlanResponse {
-        val client = clientRepository.findById(request.clientId)
-            .orElseThrow { NoSuchElementException("Client not found with id: ${request.clientId}") }
-        val staff = staffRepository.findById(request.trainerId)
-            .orElseThrow { NoSuchElementException("Staff not found with id: ${request.trainerId}") }
+        val client = patientDao.findById(request.clientId)
+            .orThrow("Client not found with id: ${request.clientId}")
+        val trainer = staffDao.findById(request.trainerId)
+            .orThrow("Staff not found with id: ${request.trainerId}")
 
-        val plan = TrainingPlanEntity(
-            clientEntity = client,
-            staff = staff,
+        val plan = TrainingPlan(
+            client = client,
+            trainer = trainer,
             title = request.title,
             description = request.description,
             weeks = request.weeks,
             sessionsPerWeek = request.sessionsPerWeek,
             active = request.active
         )
-        return trainingPlanRepository.save(plan).toResponse()
+        return trainingPlanDao.save(plan).toResponse()
     }
 
     override fun update(id: Long, request: TrainingPlanRequest): TrainingPlanResponse {
-        val plan = trainingPlanRepository.findById(id).orElse(null)
-            ?: throw NoSuchElementException("Training plan not found with id: $id")
-        plan.title = request.title
-        plan.description = request.description
-        plan.weeks = request.weeks
-        plan.sessionsPerWeek = request.sessionsPerWeek
-        plan.active = request.active
-        return trainingPlanRepository.save(plan).toResponse()
+        trainingPlanDao.findById(id).orThrow("Training plan not found with id: $id")
+
+        val client = patientDao.findById(request.clientId)
+            .orThrow("Client not found with id: ${request.clientId}")
+        val trainer = staffDao.findById(request.trainerId)
+            .orThrow("Staff not found with id: ${request.trainerId}")
+
+        val updated = TrainingPlan(
+            id = id,
+            client = client,
+            trainer = trainer,
+            title = request.title,
+            description = request.description,
+            weeks = request.weeks,
+            sessionsPerWeek = request.sessionsPerWeek,
+            active = request.active
+        )
+        return trainingPlanDao.save(updated).toResponse()
     }
 
     override fun delete(id: Long) {
-        if (!trainingPlanRepository.existsById(id))
-            throw NoSuchElementException("Training plan not found with id: $id")
-        trainingPlanRepository.deleteById(id)
+        trainingPlanDao.findById(id).orThrow("Training plan not found with id: $id")
+        trainingPlanDao.deleteById(id)
     }
 
-    private fun TrainingPlanEntity.toResponse() = TrainingPlanResponse(
+    private fun TrainingPlan.toResponse() = TrainingPlanResponse(
         id = id,
-        clientId = clientEntity.id,
-        clientFullName = "${clientEntity.firstName} ${clientEntity.lastName}",
-        trainerId = staff.id,
-        trainerFullName = "${staff.firstName} ${staff.lastName}",
+        clientId = client.id,
+        clientFullName = client.fullName,
+        trainerId = trainer.id,
+        trainerFullName = trainer.fullName,
         title = title,
         description = description,
         weeks = weeks,

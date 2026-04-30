@@ -9,5 +9,8 @@ data class Staff(
     val role: String,
     val bio: String? = null,
     val email: String,
+    val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
-)
+) {
+    val fullName: String get() = "$firstName $lastName"
+}

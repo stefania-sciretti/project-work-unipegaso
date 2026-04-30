@@ -10,4 +10,6 @@ data class Doctor(
     val email: String,
     val licenseNumber: String,
     val createdAt: LocalDateTime = LocalDateTime.now()
-)
+) {
+    val fullName: String get() = "$firstName $lastName"
+}

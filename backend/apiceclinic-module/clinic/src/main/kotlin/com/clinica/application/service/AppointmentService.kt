@@ -30,15 +30,14 @@ class AppointmentService(
             .map { it.toResponse() }
     @Transactional(readOnly = true)
     fun findById(id: Long): AppointmentResponse =
-        appointmentDao.findById(id)?.toResponse()
-            ?: throw NoSuchElementException("Appointment not found with id: $id")
+        appointmentDao.findById(id).orThrow("Appointment not found with id: $id").toResponse()
 
     fun create(request: AppointmentRequest): AppointmentResponse {
         val patient = patientDao.findById(request.patientId)
-            ?: throw NoSuchElementException("Patient not found with id: ${request.patientId}")
+            .orThrow("Patient not found with id: ${request.patientId}")
 
         val doctor = doctorDao.findById(request.doctorId)
-            ?: throw NoSuchElementException("Doctor not found with id: ${request.doctorId}")
+            .orThrow("Doctor not found with id: ${request.doctorId}")
 
         val appointment = Appointment(
             id = 0L,
@@ -57,37 +56,26 @@ class AppointmentService(
 
     fun updateStatus(id: Long, request: AppointmentStatusRequest): AppointmentResponse {
         val appointment = appointmentDao.findById(id)
-            ?: throw NoSuchElementException("Appointment not found with id: $id")
-
-        val newStatus = try {
-            AppointmentStatus.valueOf(request.status.uppercase())
-        } catch (_: IllegalArgumentException) {
-            throw IllegalArgumentException("Invalid appointment status: '${request.status}'")
-        }
-
+            .orThrow("Appointment not found with id: $id")
         val updated = appointment.copy(
-            status = newStatus,
+            status = AppointmentStatus.parse(request.status),
             updatedAt = LocalDateTime.now()
         )
-
         return appointmentDao.save(updated).toResponse()
     }
 
     fun delete(id: Long) {
-        if (!appointmentDao.existsById(id)) {
-            throw NoSuchElementException("Appointment not found with id: $id")
-        }
+        appointmentDao.findById(id).orThrow("Appointment not found with id: $id")
         appointmentDao.deleteById(id)
     }
 
-    // mapper dominio -> response
     private fun Appointment.toResponse(): AppointmentResponse =
         AppointmentResponse(
             id = this.id,
             patientId = this.patient.id,
-            patientFullName = "${this.patient.firstName} ${this.patient.lastName}",
+            patientFullName = this.patient.fullName,
             doctorId = this.doctor.id,
-            doctorFullName = "${this.doctor.firstName} ${this.doctor.lastName}",
+            doctorFullName = this.doctor.fullName,
             doctorSpecialization = this.doctor.specialization,
             scheduledAt = this.scheduledAt,
             visitType = this.visitType,

@@ -1,32 +1,29 @@
 package com.clinica.application.service
 
-import com.clinica.doors.outbound.database.entities.StaffEntity
-import com.clinica.doors.outbound.database.repositories.StaffRepository
+import com.clinica.application.domain.Staff
+import com.clinica.doors.outbound.database.dao.StaffDao
 import com.clinica.dto.StaffResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class StaffService(
-    private val staffRepository: StaffRepository
+    private val staffDao: StaffDao
 ) {
 
     @Transactional(readOnly = true)
     fun findAll(): List<StaffResponse> =
-        staffRepository.findAll().map { it.toResponse() }
+        staffDao.findAll().map { it.toResponse() }
 
     @Transactional(readOnly = true)
     fun findByRole(role: String): List<StaffResponse> =
-        staffRepository.findByRole(role).map { it.toResponse() }
+        staffDao.findByRole(role).map { it.toResponse() }
 
     @Transactional(readOnly = true)
-    fun findById(id: Long): StaffResponse {
-        val staff = staffRepository.findById(id)
-            .orElseThrow { NoSuchElementException("Staff member $id not found") }
-        return staff.toResponse()
-    }
+    fun findById(id: Long): StaffResponse =
+        staffDao.findById(id).orThrow("Staff member $id not found").toResponse()
 
-    private fun StaffEntity.toResponse(): StaffResponse =
+    private fun Staff.toResponse(): StaffResponse =
         StaffResponse(
             id = id,
             firstName = firstName,

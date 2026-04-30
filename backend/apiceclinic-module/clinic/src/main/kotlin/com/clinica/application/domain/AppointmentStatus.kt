@@ -4,5 +4,11 @@ enum class AppointmentStatus {
     BOOKED,
     CONFIRMED,
     COMPLETED,
-    CANCELLED
+    CANCELLED;
+
+    companion object {
+        fun parse(value: String): AppointmentStatus =
+            entries.find { it.name == value.uppercase() }
+                ?: throw IllegalArgumentException("Invalid appointment status: '$value'")
+    }
 }

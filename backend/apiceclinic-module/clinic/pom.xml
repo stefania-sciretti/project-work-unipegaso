@@ -120,9 +120,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.mockito.kotlin</groupId>
-            <artifactId>mockito-kotlin</artifactId>
-            <version>5.2.1</version>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk-jvm</artifactId>
+            <version>1.13.9</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
